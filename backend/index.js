@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
+const cors = require("cors");
 
 require('dotenv').config()
 
@@ -10,7 +11,7 @@ const app = express();
 // capturar body
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
-
+app.use(cors)
 
 // Conexión a Base de datos
 const uri =`mongodb+srv://sebacomaia:2NCYNO05z9rJn3cV@cluster0.dfrzdkk.mongodb.net/DWM?retryWrites=true&w=majority`;

@@ -24,6 +24,7 @@ const schemaLogin = Joi.object({
 router.post('/login', async (req, res) => {
     // validaciones
     const { error } = schemaLogin.validate(req.body);
+    
     if (error) return res.status(400).json({ error: error.details[0].message })
     
     const user = await User.findOne({ email: req.body.email });
@@ -72,7 +73,7 @@ function isValidRut(rut) {
       suma += parseInt(rutNumber.charAt(i)) * multiplo;
       if (multiplo < 7) multiplo += 1;
       else multiplo = 2;
-    }
+    }   
   
     const dvEsperado = 11 - (suma % 11);
   
@@ -130,7 +131,7 @@ router.post('/register', async (req, res) => {
         email: req.body.email,
         rut: req.body.rut,
         date: req.body.date,
-        password: req.password
+        password: password
     });
 
     try {
