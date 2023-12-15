@@ -41,13 +41,11 @@ router.post('/login', async (req, res) => {
     
     res.header('auth-token', token).json({
         error: null,
-        data: {token}
-    })
-
-    res.json({
-        error: null,
-        data: 'bienvenido'
-    })
+        data: {
+            token: token,
+            message: 'Bienvenido'
+        }
+    })    
 })
 
 let cleanRut;

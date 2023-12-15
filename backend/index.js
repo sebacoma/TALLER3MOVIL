@@ -11,8 +11,15 @@ const app = express();
 // capturar body
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
-app.use(cors)
-
+const corsOptions = {
+    origin: ['http://192.168.1.92', 'http://localhost:8100'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: '*',
+    optionsSuccessStatus: 200 // Algunos navegadores antiguos (IE11, varios móviles) no envían el código 204
+  };
+  
+  app.use(cors(corsOptions));
+  
 // Conexión a Base de datos
 const uri =`mongodb+srv://sebacomaia:2NCYNO05z9rJn3cV@cluster0.dfrzdkk.mongodb.net/DWM?retryWrites=true&w=majority`;
 const option = { useNewUrlParser: true, useUnifiedTopology: true }
@@ -34,8 +41,8 @@ app.get('/', (req, res) => {
     })
 });
 
-// iniciar server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`servidor andando en: ${PORT}`)
-})
+const PORT = 3000;
+const HOST = '192.168.1.92'; 
+app.listen(PORT, HOST, () => {
+    console.log(`El servidor está corriendo en http://${HOST}:${PORT}`);
+  });
