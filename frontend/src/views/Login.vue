@@ -2,17 +2,25 @@
   <IonPage>
     <IonHeader>
       <IonToolbar>
-        <IonTitle>Login</IonTitle>
+        <IonButtons slot="start">
+          <IonBackButton defaultHref="/" />
+        </IonButtons>
       </IonToolbar>
     </IonHeader>
+
     <IonContent class="ion-text-center ion-padding">
-      <IonImg src="./MobileHub (1).png"></IonImg>
+      <div style="text-align: center;">
+        <img src="./MobileHub (1).png" alt="Imagen de bienvenida" style="width: 80%; max-width: 400px;">
+      </div>
+
       <IonList class="ion-padding">
         <IonItem>
-          <IonInput label="Email" v-model="email"></IonInput>
+          <IonLabel position="floating">Email</IonLabel>
+          <IonInput v-model="email"></IonInput>
         </IonItem>
         <IonItem>
-          <IonInput label="Contraseña" type="password" v-model="password"></IonInput>
+          <IonLabel position="floating">Contraseña</IonLabel>
+          <IonInput type="password" v-model="password"></IonInput>
         </IonItem>
         <IonButton expand="block" @click="login" class="custom-button">Iniciar sesión</IonButton>
       </IonList>
@@ -21,7 +29,7 @@
 </template>
 
 <script>
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonImg, IonList, IonItem, IonInput, IonButton } from '@ionic/vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonInput, IonButton, IonButtons, IonBackButton, IonLabel } from '@ionic/vue';
 import axios from 'axios';
 
 export default {
@@ -31,11 +39,13 @@ export default {
     IonToolbar,
     IonTitle,
     IonContent,
-    IonImg,
     IonList,
     IonItem,
     IonInput,
     IonButton,
+    IonButtons,
+    IonBackButton,
+    IonLabel
   },
   data() {
     return {
