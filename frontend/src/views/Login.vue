@@ -22,7 +22,7 @@
           <IonLabel position="floating">Contraseña</IonLabel>
           <IonInput type="password" v-model="password"></IonInput>
         </IonItem>
-        <IonButton expand="block" @click="login" class="custom-button">Iniciar sesión</IonButton>
+        <IonButton @click="login" class="custom-button">Log in</IonButton>
       </IonList>
     </IonContent>
   </IonPage>
@@ -60,19 +60,21 @@ export default {
           email: this.email,
           password: this.password
         });
-        
+
         // Manejar la respuesta del servidor
         if (response.data.error) {
           console.error('Error al iniciar sesión:', response.data.error);
           // Manejar el error, por ejemplo, mostrar un mensaje al usuario
         } else {
           console.log('Token recibido:', response.data.data.token);
-          router.push('./')
           // Redirigir a la siguiente página o realizar otras acciones después del inicio de sesión exitoso
         }
       } catch (error) {
-        console.error('Error al iniciar sesión:', error.response.data);
-        // Manejar los errores, por ejemplo, mostrar un mensaje al usuario
+        if (error.response) {
+          console.error('Error al iniciar sesión:', error.response.data);
+        } else {
+          console.error('Error al iniciar sesión:', error.message);
+        }
       }
     }
   }

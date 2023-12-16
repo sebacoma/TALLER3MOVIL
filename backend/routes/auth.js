@@ -10,7 +10,6 @@ const nodemailer = require('nodemailer');
 
 const jwt = require('jsonwebtoken');
 
-
 const schemaRegister = Joi.object({
     name: Joi.string().min(6).max(255).required(),
     email: Joi.string().min(6).max(255).required().email(),
@@ -41,12 +40,16 @@ router.post('/login', async (req, res) => {
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.status(400).json({ error: 'contraseña no válida' })
     
+    console.log('jaja');
+
     //creamos el token 
     const token = jwt.sign({
         name: user.name,
         id: user._id
     }, process.env.TOKEN_SECRET)
     
+    console.log('jojo')
+
     res.header('auth-token', token).json({
         error: null,
         data: {
@@ -140,7 +143,7 @@ router.post('/register', async (req, res) => {
     //hash contraseña, encripta la contraseña que por default es el rut, sin rut ni guion
     const salt = await bcrypt.genSalt(10);
     const password = await bcrypt.hash(cleanRut, salt);
-    const verificationToken = "EsVerdad";
+    const verificationToken = (Date.now() / 1000).toString();
 
     console.log(verificationToken)
 
@@ -161,7 +164,7 @@ router.post('/register', async (req, res) => {
             from: 'mobile@hub.com',
             to: req.body.email,
             subject: 'Verify your email',
-            text: `Please verify your email by clicking on the following link: http:// 192.168.86.63:3000/api/user/verify-email?token=${verificationToken}`
+            text: `Please verify your email by clicking on the following link: http://192.168.86.63:3000/api/user/verify-email?token=${verificationToken}`
         };
         transporter.sendMail(mailOptions, function(error, info){
           if (error) {
@@ -194,7 +197,7 @@ router.get('/verify-email', async (req, res) => {
         }
 
         user.isVerified = true;
-        user.verificationToken = undefined; // remove the verification token
+        user.verificationToken = 'verificado'; // remove the verification token
         await user.save();
 
         res.json({ message: 'Email verified successfully' });
