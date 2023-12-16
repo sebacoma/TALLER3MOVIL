@@ -25,7 +25,11 @@ const userSchema = mongoose.Schema({
     password: {
         type :String,
         required: true
-    }
+    },
+    verificationToken: {
+        type: String,
+        required: true
+    },
 })
 
 module.exports = mongoose.model('User', userSchema);

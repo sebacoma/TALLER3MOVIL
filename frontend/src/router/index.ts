@@ -3,6 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 import HomePage from '../views/HomePage.vue';
 import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
+import RepoInfo from '../views/RepoInfo.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Signup',
     component: Signup,
   },
+  {
+    path: '/repo-info',
+    name: 'RepoInfo',
+    component: RepoInfo,
+  }
 ]
 
 const router = createRouter({

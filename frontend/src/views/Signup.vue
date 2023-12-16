@@ -54,12 +54,12 @@ export default {
   methods: {
     async signup() {
       try {
-        const response = await axios.post('http://192.168.1.92:3000/api/user/register', {
+        const response = await axios.post('http://192.168.86.63:3000/api/user/register', {
           name: this.name,
           email: this.email,
           rut: this.rut,
           date: this.date,
-          password: this.password
+          password: this.password,
         });
 
         if (response.data.error) {
@@ -68,6 +68,8 @@ export default {
         } else {
           console.log('Usuario registrado:', response.data.data);
           // Redirigir a la siguiente página o realizar otras acciones después del registro exitoso
+          //mandame a la HomePage
+          this.$router.push('/home');
         }
       } catch (error) {
         console.error('Error al registrarse:', error.response.data);

@@ -56,7 +56,7 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await axios.post('http://192.168.1.92:3000/api/user/login', {
+        const response = await axios.post('http://192.168.86.63:3000/api/user/login', {
           email: this.email,
           password: this.password
         });
@@ -67,6 +67,7 @@ export default {
           // Manejar el error, por ejemplo, mostrar un mensaje al usuario
         } else {
           console.log('Token recibido:', response.data.data.token);
+          router.push('./')
           // Redirigir a la siguiente página o realizar otras acciones después del inicio de sesión exitoso
         }
       } catch (error) {

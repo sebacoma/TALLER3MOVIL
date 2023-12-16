@@ -6,20 +6,28 @@ const Joi = require('@hapi/joi');
 
 const bcrypt = require('bcrypt');
 
+const nodemailer = require('nodemailer');
+
 const jwt = require('jsonwebtoken');
+
 
 const schemaRegister = Joi.object({
     name: Joi.string().min(6).max(255).required(),
     email: Joi.string().min(6).max(255).required().email(),
     rut: Joi.string().min(6).max(255).required(),
     date: Joi.string().min(6).max(255).required(),
-    password: Joi.string()
+    password: Joi.string(),
+    verificationToken: Joi.string()
 });
 
 const schemaLogin = Joi.object({
     email: Joi.string().min(6).max(255).required().email(),
     password: Joi.string().min(6).max(1024).required()
 })
+
+
+
+
 //ruta a login :)
 router.post('/login', async (req, res) => {
     // validaciones
@@ -49,6 +57,15 @@ router.post('/login', async (req, res) => {
 })
 
 let cleanRut;
+
+// Create transporter
+let transporter = nodemailer.createTransport({
+    service: 'gmail', // replace with your email provider
+    auth: {
+      user: 'sebastian.concha@alumnos.ucn.cl', // replace with your email
+      pass: '06022001' // replace with your password
+    }
+  });
 
 // Función para validar si el correo es de la UCN
 function isValidUCNEmail(email) {
@@ -123,17 +140,37 @@ router.post('/register', async (req, res) => {
     //hash contraseña, encripta la contraseña que por default es el rut, sin rut ni guion
     const salt = await bcrypt.genSalt(10);
     const password = await bcrypt.hash(cleanRut, salt);
+    const verificationToken = "EsVerdad";
+
+    console.log(verificationToken)
 
     const user = new User({
         name: req.body.name,
         email: req.body.email,
         rut: req.body.rut,
         date: req.body.date,
-        password: password
+        password: password,
+        verificationToken: verificationToken
     });
 
     try {
         const userDB = await user.save();
+
+        // Send email to the new user
+        let mailOptions = {
+            from: 'mobile@hub.com',
+            to: req.body.email,
+            subject: 'Verify your email',
+            text: `Please verify your email by clicking on the following link: http:// 192.168.86.63:3000/api/user/verify-email?token=${verificationToken}`
+        };
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+
         res.json({
             error: null,
             data: userDB
@@ -141,6 +178,33 @@ router.post('/register', async (req, res) => {
     } catch (error) {
         res.status(400).json({ error: 'Hubo un error al guardar el usuario' });
     }
+
+
+    
 });
+
+router.get('/verify-email', async (req, res) => {
+    const { token } = req.query;
+
+    try {
+        const user = await User.findOne({ verificationToken: token });
+
+        if (!user) {
+            return res.status(400).json({ error: 'Invalid verification token' });
+        }
+
+        user.isVerified = true;
+        user.verificationToken = undefined; // remove the verification token
+        await user.save();
+
+        res.json({ message: 'Email verified successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Error verifying email' });
+    }
+});
+
+// route to recover password
+
+   
 
 module.exports = router;
