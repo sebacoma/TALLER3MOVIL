@@ -28,9 +28,10 @@
   </IonPage>
 </template>
 
-<script>
+<script lang="ts">
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonInput, IonButton, IonButtons, IonBackButton, IonLabel } from '@ionic/vue';
 import axios from 'axios';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default {
@@ -48,31 +49,26 @@ export default {
     IonBackButton,
     IonLabel
   },
-  data() {
-    return {
-      email: '',
-      password: ''
-    };
-  },
-  methods: {
-    async login() {
+  setup() {
+    const router = useRouter();
+    const email = ref('');
+    const password = ref('');
+
+    const login = async () => {
       try {
         const response = await axios.post('http://192.168.86.63:3000/api/user/login', {
-          email: this.email,
-          password: this.password
+          email: email.value,
+          password: password.value
         });
 
-        const router = useRouter();
-
-        // Manejar la respuesta del servidor
+        // Handle server response
         if (response.data.error) {
           console.error('Error al iniciar sesión:', response.data.error);
-          // Manejar el error, por ejemplo, mostrar un mensaje al usuario
+          // Handle error, e.g., show a message to the user
         } else {
           console.log('Token recibido:', response.data.data.token);
           router.push('/repo-info');
-          // this.$router.push('/repo-info');
-          // Redirigir a la siguiente página o realizar otras acciones después del inicio de sesión exitoso
+          // Redirect to the next page or perform other actions after successful login
         }
       } catch (error) {
         if (error.response) {
@@ -81,7 +77,13 @@ export default {
           console.error('Error al iniciar sesión:', error.message);
         }
       }
-    }
+    };
+
+    return {
+      email,
+      password,
+      login
+    };
   }
 };
 </script>

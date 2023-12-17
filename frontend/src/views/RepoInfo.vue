@@ -1,44 +1,61 @@
 <template>
-    <div>
-      <h1>Información del Repositorio de GitHub</h1>
-      <button @click="obtenerInfoRepo">Obtener información</button>
-      <div v-if="repoInfo">
-        <p><strong>Nombre:</strong> {{ repoInfo.name }}</p>
-        <p><strong>Descripción:</strong> {{ repoInfo.description }}</p>
-        <!-- Agrega más campos según la información que quieras mostrar -->
+  <IonPage>
+    <IonHeader>
+      <IonToolbar>
+        <IonButtons slot="start">
+          <IonBackButton defaultHref="/" />
+        </IonButtons>
+      </IonToolbar>
+    </IonHeader>
+
+    <IonContent class="ion-text-center ion-padding">
+      <div>
+        <h1>GitHub Repositories</h1>
+        <IonList>
+          <IonItem v-for="(repo, index) in repos" :key="index">
+            <IonLabel>{{ repo.name }}</IonLabel>
+          </IonItem>
+        </IonList>
       </div>
-    </div>
-  </template>
-  <script>
-  import { IonPage, IonHeader, IonToolbar, IonContent, IonButton } from '@ionic/vue';
-  import axios from 'axios';
-  import { useRouter } from 'vue-router'; // Importa useRouter de Vue Router
-  
-  export default {
-    components: {
-      IonPage,
-      IonHeader,
-      IonToolbar,
-      IonContent,
-      IonButton
-    },
-    data() {
-      return {
-        repoInfo: null,
-      };
-    },
-    methods: {
-      async obtenerInfoRepo() {
-        try {
-          const response = await axios.get('http://192.168.86.63:3000/api/github/repo-info'); // Cambia la URL si es necesario
-          this.repoInfo = response.data;
-        } catch (error) {
-          console.error(error);
-        }
-      }      // redirigirARepoInfo() {
-      //   const router = useRouter(); // Obtiene la instancia del enrutador
-      //   router.push({ name: 'RepoInfo' }); // Redirige al usuario a la página 'RepoInfo'
-      // }
-    }
-  };
-  </script>
+
+    </IonContent>
+
+  </IonPage>
+</template>
+
+<script>
+import { IonPage, IonHeader, IonToolbar, IonContent, IonButton, IonList, IonItem, IonBackButton } from '@ionic/vue';
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+
+export default {
+  components: {
+    IonPage,
+    IonHeader,
+    IonToolbar,
+    IonContent,
+    IonButton,
+    IonList,
+    IonItem,
+    IonBackButton
+  },
+  setup() {
+    const repos = ref([]);
+
+    const fetchRepos = async () => {
+      try {
+        const response = await axios.get('http://192.168.86.63:3000/api/github/user-repos');
+        repos.value = response.data;
+      } catch (error) {
+        console.error('Error fetching repositories:', error.message);
+      }
+    };
+
+    onMounted(fetchRepos);
+
+    return {
+      repos
+    };
+  }
+};
+</script>
