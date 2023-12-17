@@ -4,6 +4,7 @@ import HomePage from '../views/HomePage.vue';
 import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import RepoInfo from '../views/RepoInfo.vue';
+import Commits from '../views/Commits.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -29,6 +30,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/repo-info',
     name: 'RepoInfo',
     component: RepoInfo,
+  },
+  {
+    path: '/commits/:repoName',
+    name: 'Commits',
+    component: Commits,
   }
 ]
 

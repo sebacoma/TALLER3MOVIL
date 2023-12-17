@@ -14,10 +14,13 @@
         <IonList>
           <IonItem v-for="(repo, index) in repos" :key="index" @click="selectRepo(repo)">
             <IonLabel>
-              <p><h2>{{ repo.name }}</h2></p>
+              <p>
+              <h2>{{ repo.name }}</h2>
+              </p>
             </IonLabel>
             <div v-if="selectedRepo && selectedRepo.name === repo.name">
-              <p>Created at: {{ new Date(selectedRepo.created_at).toLocaleDateString() }} <br> Number of commits: {{ selectedRepo.commits }}</p>
+              <p>Created at: {{ new Date(selectedRepo.created_at).toLocaleDateString() }}</p>
+              <IonButton @click="goToCommitsPage(selectedRepo.name)">Number of commits: {{ selectedRepo.commits }}</IonButton>
             </div>
           </IonItem>
         </IonList>
@@ -31,6 +34,7 @@
 import { IonPage, IonHeader, IonToolbar, IonContent, IonButton, IonList, IonItem, IonBackButton, IonLabel } from '@ionic/vue';
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
   components: {
@@ -44,37 +48,45 @@ export default {
     IonBackButton
   },
   setup() {
-  const repos = ref([]);
-  const selectedRepo = ref(null);
+    const repos = ref([]);
+    const selectedRepo = ref(null);
+    const router = useRouter();
 
-  const fetchRepos = async () => {
-    try {
-      const response = await axios.get('http://192.168.86.63:3000/api/github/user-repos');
-      repos.value = response.data;
-    } catch (error) {
-      console.error('Error fetching repositories:', error.message);
-    }
-  };
+    const goToCommitsPage = (repoName) => {
+      console.log('apretao')
+      router.push(`/commits/${repoName}`);
+    };
 
-  const selectRepo = async (repo) => {
-    selectedRepo.value = repo;
-    try {
-      const response = await axios.get(`http://192.168.86.63:3000/api/github/repos/${repo.name}`);
-      console.log(response.data)
-      console.log('aaaahhhhhh')
-      selectedRepo.value = response.data;
-    } catch (error) {
-      console.error('Error fetching repository information:', error.message);
-    }
-  };
 
-  onMounted(fetchRepos);
+    const fetchRepos = async () => {
+      try {
+        const response = await axios.get('http://192.168.86.63:3000/api/github/user-repos');
+        repos.value = response.data;
+      } catch (error) {
+        console.error('Error fetching repositories:', error.message);
+      }
+    };
 
-  return {
-    repos,
-    selectedRepo,
-    selectRepo
-  };
-}
+    const selectRepo = async (repo) => {
+      selectedRepo.value = repo;
+      try {
+        const response = await axios.get(`http://192.168.86.63:3000/api/github/repos/${repo.name}`);
+        console.log(response.data)
+        console.log('aaaahhhhhh')
+        selectedRepo.value = response.data;
+      } catch (error) {
+        console.error('Error fetching repository information:', error.message);
+      }
+    };
+
+    onMounted(fetchRepos);
+
+    return {
+      repos,
+      selectedRepo,
+      selectRepo,
+      goToCommitsPage
+    };
+  }
 };
 </script>

@@ -3,7 +3,7 @@ const router = express.Router();
 const { Octokit } = require('@octokit/rest');
 // token de git
 const octokit = new Octokit({
-  auth: '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' // Utilizando el token de acceso desde las variables de entorno
+  auth: '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' // Utilizando el token de acceso desde las variables de entorno
 });
 
 
@@ -42,6 +42,25 @@ router.get('/repos/:repo', async (req, res) => {
     console.log(res.json.commits)
   } catch (error) {
     console.error('Error in /repos/:username/:repo endpoint:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// route for a specific repo's commits
+router.get('/repos/details/:repo', async (req, res) => {
+  try {
+    const { repo } = req.params;
+    const username = 'Dizkm8'; // Replace with the username
+
+    const commits = await octokit.repos.listCommits({
+      owner: username,
+      repo,
+      sha: 'master', // specify the branch
+    });
+
+    res.json(commits.data);
+  } catch (error) {
+    console.error('Error in /repos/:username/:repo/commits endpoint:', error.message);
     res.status(500).json({ error: error.message });
   }
 });
