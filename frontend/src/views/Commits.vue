@@ -12,7 +12,6 @@
             <IonList>
                 <IonItem v-for="(commit, index) in commits" :key="index">
                     <IonLabel>
-                        <h2>{{ commit.sha }}</h2>
                         <p>{{ commit.commit.message }}</p>
                     </IonLabel>
                 </IonItem>

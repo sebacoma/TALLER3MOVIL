@@ -64,7 +64,7 @@ export default {
         repos.value = response.data;
       } catch (error) {
         console.error('Error fetching repositories:', error.message);
-      }
+      } 
     };
 
     const selectRepo = async (repo) => {

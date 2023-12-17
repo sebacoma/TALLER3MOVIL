@@ -3,7 +3,7 @@ const router = express.Router();
 const { Octokit } = require('@octokit/rest');
 // token de git
 const octokit = new Octokit({
-  auth: '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' // Utilizando el token de acceso desde las variables de entorno
+  auth: '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' // Utilizando el token de acceso desde las variables de entorno
 });
 
 
@@ -55,7 +55,7 @@ router.get('/repos/details/:repo', async (req, res) => {
     const commits = await octokit.repos.listCommits({
       owner: username,
       repo,
-      sha: 'master', // specify the branch
+      sha: 'main', // specify the branch
     });
 
     res.json(commits.data);
