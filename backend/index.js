@@ -9,9 +9,23 @@ const app = express();
 // Capturar body
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
+const os = require('os');
+
+function getLocalIP() {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const interface of interfaces[name]) {
+      const {address, family, internal} = interface;
+      if (family === 'IPv4' && !internal) {
+        return address;
+      }
+    }
+  }
+  return '127.0.0.1';
+}
 
 const corsOptions = {
-    origin: ['http://192.168.86.63', 'http://localhost:8100'],
+    origin: [getLocalIP(),'http://192.168.86.63', 'http://localhost:8100'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: '*',
     optionsSuccessStatus: 200 // Algunos navegadores antiguos (IE11, varios móviles) no envían el código 204
@@ -40,8 +54,10 @@ app.get('/', (req, res) => {
     })
 });
 
+
+const HOST = getLocalIP();
 const PORT = 3000;
-const HOST = '192.168.86.63';
+
 app.listen(PORT, HOST, () => {
     console.log(`El servidor está corriendo en http://${HOST}:${PORT}`);
 });

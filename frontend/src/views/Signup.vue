@@ -15,12 +15,12 @@
       </div>
       <div class="ion-text-center">
         <h1>Signup</h1>
-        <IonInput placeholder="Nombre" v-model="name"></IonInput>
-        <IonInput placeholder="Correo electrónico" v-model="email"></IonInput>
+        <IonInput placeholder="Nombre Completo" v-model="name"></IonInput>
+        <IonInput placeholder="Email" v-model="email"></IonInput>
         <IonInput placeholder="RUT" v-model="rut"></IonInput>
         <IonInput placeholder="Fecha de nacimiento" v-model="date"></IonInput>
         <IonInput placeholder="Contraseña" type="password" v-model="password"></IonInput>
-        <IonButton @click="signup" class="custom-button">Registrarse</IonButton>
+        <IonButton @click="signup" class="custom-button">Signup</IonButton>
       </div>
     </IonContent>
   </IonPage>
@@ -52,6 +52,7 @@ export default {
     };
   },
   methods: {
+    //metodo para registrarse, usando axios para consumir
     async signup() {
       try {
         const response = await axios.post('http://192.168.86.63:3000/api/user/register', {
@@ -64,16 +65,15 @@ export default {
 
         if (response.data.error) {
           console.error('Error al registrarse:', response.data.error);
-          // Manejar el error, por ejemplo, mostrar un mensaje al usuario
+          
         } else {
           console.log('Usuario registrado:', response.data.data);
-          // Redirigir a la siguiente página o realizar otras acciones después del registro exitoso
-          //mandame a la HomePage
+          //manda a la HomePage
           this.$router.push('/home');
         }
       } catch (error) {
         console.error('Error al registrarse:', error.response.data);
-        // Manejar los errores, por ejemplo, mostrar un mensaje al usuario
+       
       }
     }
   }

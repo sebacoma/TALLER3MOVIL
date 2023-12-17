@@ -12,19 +12,23 @@
       <div>
         <h1>GitHub Repositories</h1>
         <IonList>
-          <IonItem v-for="(repo, index) in repos" :key="index">
-            <IonLabel>{{ repo.name }}</IonLabel>
+          <IonItem v-for="(repo, index) in repos" :key="index" @click="selectRepo(repo)">
+            <IonLabel>
+              <p><h2>{{ repo.name }}</h2></p>
+            </IonLabel>
+            <div v-if="selectedRepo && selectedRepo.name === repo.name">
+              <p>Created at: {{ new Date(selectedRepo.created_at).toLocaleDateString() }} <br> Number of commits: {{ selectedRepo.commits }}</p>
+            </div>
           </IonItem>
         </IonList>
       </div>
-
     </IonContent>
 
   </IonPage>
 </template>
 
 <script>
-import { IonPage, IonHeader, IonToolbar, IonContent, IonButton, IonList, IonItem, IonBackButton } from '@ionic/vue';
+import { IonPage, IonHeader, IonToolbar, IonContent, IonButton, IonList, IonItem, IonBackButton, IonLabel } from '@ionic/vue';
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 
@@ -40,22 +44,37 @@ export default {
     IonBackButton
   },
   setup() {
-    const repos = ref([]);
+  const repos = ref([]);
+  const selectedRepo = ref(null);
 
-    const fetchRepos = async () => {
-      try {
-        const response = await axios.get('http://192.168.86.63:3000/api/github/user-repos');
-        repos.value = response.data;
-      } catch (error) {
-        console.error('Error fetching repositories:', error.message);
-      }
-    };
+  const fetchRepos = async () => {
+    try {
+      const response = await axios.get('http://192.168.86.63:3000/api/github/user-repos');
+      repos.value = response.data;
+    } catch (error) {
+      console.error('Error fetching repositories:', error.message);
+    }
+  };
 
-    onMounted(fetchRepos);
+  const selectRepo = async (repo) => {
+    selectedRepo.value = repo;
+    try {
+      const response = await axios.get(`http://192.168.86.63:3000/api/github/repos/${repo.name}`);
+      console.log(response.data)
+      console.log('aaaahhhhhh')
+      selectedRepo.value = response.data;
+    } catch (error) {
+      console.error('Error fetching repository information:', error.message);
+    }
+  };
 
-    return {
-      repos
-    };
-  }
+  onMounted(fetchRepos);
+
+  return {
+    repos,
+    selectedRepo,
+    selectRepo
+  };
+}
 };
 </script>

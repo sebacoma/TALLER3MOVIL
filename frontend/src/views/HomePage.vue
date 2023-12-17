@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos específicos para la página de inicio */
+
 
 .custom-button {
   --background: black;
