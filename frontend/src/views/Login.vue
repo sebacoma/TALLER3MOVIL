@@ -31,6 +31,7 @@
 <script>
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonInput, IonButton, IonButtons, IonBackButton, IonLabel } from '@ionic/vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 export default {
   components: {
@@ -61,12 +62,16 @@ export default {
           password: this.password
         });
 
+        const router = useRouter();
+
         // Manejar la respuesta del servidor
         if (response.data.error) {
           console.error('Error al iniciar sesión:', response.data.error);
           // Manejar el error, por ejemplo, mostrar un mensaje al usuario
         } else {
           console.log('Token recibido:', response.data.data.token);
+          router.push('/repo-info');
+          // this.$router.push('/repo-info');
           // Redirigir a la siguiente página o realizar otras acciones después del inicio de sesión exitoso
         }
       } catch (error) {

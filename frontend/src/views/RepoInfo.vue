@@ -35,11 +35,10 @@
         } catch (error) {
           console.error(error);
         }
-      },
-      redirigirARepoInfo() {
-        const router = useRouter(); // Obtiene la instancia del enrutador
-        router.push({ name: 'RepoInfo' }); // Redirige al usuario a la página 'RepoInfo'
-      }
+      }      // redirigirARepoInfo() {
+      //   const router = useRouter(); // Obtiene la instancia del enrutador
+      //   router.push({ name: 'RepoInfo' }); // Redirige al usuario a la página 'RepoInfo'
+      // }
     }
   };
   </script>
