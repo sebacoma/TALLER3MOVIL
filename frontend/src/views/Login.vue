@@ -56,7 +56,7 @@ export default {
 
     const login = async () => {
       try {
-        const response = await axios.post('http://192.168.86.63:3000/api/user/login', {
+        const response = await axios.post('http://192.168.1.92:3000/api/user/login', {
           email: email.value,
           password: password.value
         });

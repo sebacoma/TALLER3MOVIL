@@ -3,7 +3,7 @@ const router = express.Router();
 const { Octokit } = require('@octokit/rest');
 // token de git
 const octokit = new Octokit({
-  auth: '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' // Utilizando el token de acceso desde las variables de entorno
+  auth: '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' // Utilizando el token de acceso desde las variables de entorno
 });
 
 

@@ -5,6 +5,9 @@
         <IonButtons slot="start">
           <IonBackButton defaultHref="/" />
         </IonButtons>
+        <IonButtons slot="end">
+          <IonButton @click="goToEditPage()">Edit user</IonButton>
+        </IonButtons>
       </IonToolbar>
     </IonHeader>
 
@@ -52,6 +55,10 @@ export default {
     const selectedRepo = ref(null);
     const router = useRouter();
 
+    const goToEditPage = () => {
+      router.push('/edituser'); 
+    };
+
     const goToCommitsPage = (repoName) => {
       console.log('apretao')
       router.push(`/commits/${repoName}`);
@@ -60,7 +67,7 @@ export default {
 
     const fetchRepos = async () => {
       try {
-        const response = await axios.get('http://192.168.86.63:3000/api/github/user-repos');
+        const response = await axios.get('http://192.168.1.92:3000/api/github/user-repos');
         repos.value = response.data;
       } catch (error) {
         console.error('Error fetching repositories:', error.message);
@@ -70,7 +77,7 @@ export default {
     const selectRepo = async (repo) => {
       selectedRepo.value = repo;
       try {
-        const response = await axios.get(`http://192.168.86.63:3000/api/github/repos/${repo.name}`);
+        const response = await axios.get(`http://192.168.1.92:3000/api/github/repos/${repo.name}`);
         console.log(response.data)
         console.log('aaaahhhhhh')
         selectedRepo.value = response.data;
@@ -78,6 +85,8 @@ export default {
         console.error('Error fetching repository information:', error.message);
       }
     };
+    
+    
 
     onMounted(fetchRepos);
 
@@ -85,7 +94,8 @@ export default {
       repos,
       selectedRepo,
       selectRepo,
-      goToCommitsPage
+      goToCommitsPage,
+      goToEditPage
     };
   }
 };

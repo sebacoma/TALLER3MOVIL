@@ -206,7 +206,40 @@ router.get('/verify-email', async (req, res) => {
     }
 });
 
-// route to recover password
+router.put('/edit/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    const { name, email, rut, date, password } = req.body; // Datos a actualizar
+
+    try {
+        // Buscar al usuario por su ID
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        // Actualizar los campos que se han enviado
+        if (name) user.name = name;
+        if (email) user.email = email;
+        if (rut) user.rut = rut;
+        if (date) user.date = date;
+        if (password) {
+            const salt = await bcrypt.genSalt(10);
+            const newPassword = await bcrypt.hash(password, salt);
+            user.password = newPassword;
+        }
+
+        // Guardar los cambios
+        const updatedUser = await user.save();
+
+        res.json({
+            error: null,
+            data: updatedUser
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al actualizar el usuario' });
+    }
+});
 
    
 

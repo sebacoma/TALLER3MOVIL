@@ -4,7 +4,8 @@ import HomePage from '../views/HomePage.vue';
 import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import RepoInfo from '../views/RepoInfo.vue';
-import Commits from '../views/Commits.vue'
+import Commits from '../views/Commits.vue';
+import Edituser from '../views/editUser.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -36,6 +37,12 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Commits',
     component: Commits,
   }
+  ,
+  {
+    path: '/edituser',
+    name: 'Edituser',
+    component: Edituser,
+  },
 ]
 
 const router = createRouter({

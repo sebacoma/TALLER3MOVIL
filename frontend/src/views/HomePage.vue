@@ -7,6 +7,7 @@
       <div class="ion-text-center">
         <h1>WELCOME</h1>
         <IonButton @click="goToLogin" class="custom-button">Login</IonButton>
+        <br>
         <IonButton @click="goToSignup" class="custom-button">Signup</IonButton>
       </div>
     </IonContent>

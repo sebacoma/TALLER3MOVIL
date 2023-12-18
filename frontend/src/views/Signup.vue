@@ -55,7 +55,7 @@ export default {
     //metodo para registrarse, usando axios para consumir
     async signup() {
       try {
-        const response = await axios.post('http://192.168.86.63:3000/api/user/register', {
+        const response = await axios.post('http://192.168.1.92:3000/api/user/register', {
           name: this.name,
           email: this.email,
           rut: this.rut,

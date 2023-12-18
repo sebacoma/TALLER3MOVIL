@@ -46,7 +46,7 @@ export default {
     },
     async created() {
         const repoName = this.$route.params.repoName;
-        const response = await axios.get(`http://192.168.86.63:3000/api/github/repos/details/${repoName}`);
+        const response = await axios.get(`http://192.168.1.92:3000/api/github/repos/details/${repoName}`);
         this.commits = response.data;
     },
 };
