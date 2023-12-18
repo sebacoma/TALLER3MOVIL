@@ -20,7 +20,7 @@
 2. Instala las dependencias usando npm install -g @capacitor/cli despues has npm install axios
 3. Asegúrate de tener el servidor backend en ejecución antes de iniciar el frontend.
 4. Configura la URL del servidor backend en los archivos de configuración si es necesario.
-- en este apartado, cuando ya hayas corrido el backend, en la terminal te dira en que puerto esxactamente esta corriendo, vas a copiar la direccion, y la vas a pegar en las rutas de nuestros archivos ".vue" de la carpeta src/views
+- en este apartado, cuando ya hayas corrido el backend, en la terminal te dira en que puerto esxactamente esta corriendo, vas a copiar la direccion, y la vas a pegar en las rutas de nuestros archivos ".vue", pero solo en la parte del "http://000.00.00.00:3000" y todo lo demas va, de la carpeta src/views
 5. Ejecuta la aplicación frontend con el comando `ionic serve`.
 
 
